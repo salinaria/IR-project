@@ -1,0 +1,10 @@
+name,query_type,P_5,ndcg_cut_10,map,recall_10
+BM25,broad_ambiguous,0.2,0.8261859507142916,0.7666666666666666,1.0
+BM25,informational,0.2,0.9,0.8666666666666666,1.0
+BM25,navigational,0.2,0.9261859507142916,0.9,1.0
+QL,broad_ambiguous,0.0,0.0,0.0008130081300813,0.0
+QL,informational,0.0,0.0,0.0,0.0
+QL,navigational,0.04,0.2,0.2002234636871508,0.2
+TFIDF,broad_ambiguous,0.0,0.0,0.0,0.0
+TFIDF,informational,0.0,0.0,0.0,0.0
+TFIDF,navigational,0.0,0.0,0.0025,0.0

@@ -1,0 +1,14 @@
+beautifulsoup4
+ir_datasets
+matplotlib
+nltk
+numpy
+pandas
+pyterrier
+python-dotenv
+requests
+scikit-learn
+scipy
+seaborn
+tqdm
+wordcloud

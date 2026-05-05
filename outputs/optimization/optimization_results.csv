@@ -1,0 +1,4 @@
+setting,latency_ms,docs_scored
+disjunctive,268.0750809995516,15000.0
+conjunctive,283.55378699779976,15000.0
+overlap_at_10,0.0,1.0

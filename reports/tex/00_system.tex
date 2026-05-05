@@ -1,0 +1,30 @@
+% How the pipeline works and what broke along the way
+\section*{System overview and challenges}
+\subsection*{End-to-end flow}
+\begin{enumerate}
+  \item \textbf{Crawl} (\texttt{src/crawl\_temple.py}): BFS on \texttt{temple.edu}, stream-append JSONL, resume by scanning existing \texttt{docno} and URLs. Two queues prefer unseen URLs before re-fetching known pages (expansion-only).
+  \item \textbf{Dedupe} (\texttt{src/dedupe\_corpus.py}): first row per \texttt{docno} $\rightarrow$ \texttt{data/raw/corpus\_deduped.jsonl}.
+  \item \textbf{Index} (\texttt{src/build\_index.py}): PyTerrier \texttt{IterDictIndexer}, meta \texttt{docno}, text field \texttt{text}.
+  \item \textbf{Analysis} (\texttt{src/collection\_analysis.py}): vocabulary, Zipf, lengths, stopwords, word cloud $\rightarrow$ \texttt{outputs/analysis/}.
+  \item \textbf{Queries / pooling}: templates and \texttt{queries.tsv}; pool from BM25, TF-IDF, QL.
+  \item \textbf{Bootstrap qrels}: rank-1 BM25 labeled relevant (temporary metrics only).
+  \item \textbf{Eval, sensitivity, optimization}: PyTerrier experiments $\rightarrow$ \texttt{outputs/eval/}, \texttt{outputs/optimization/}.
+  \item \textbf{Reports}: \texttt{src/update\_reports.py} refreshes Markdown; \texttt{src/export\_latex\_reports.py} emits this PDF bundle.
+\end{enumerate}
+
+\subsection*{Snapshot numbers (from this export)}
+\begin{itemize}
+  \item Raw JSONL lines: \textbf{{\RawCorpusLines}} (includes duplicate lines from restarts).
+  \item Deduped documents: \textbf{{\DedupDocs}}.
+  \item Collection summary (first CSV row): docs {\SummaryDocs}, vocab {\SummaryVocab}, tokens {\SummaryTokens}, avg length {\SummaryAvgLen}.
+  \item BM25 nDCG@10 (aggregate file, bootstrap qrels): \textbf{{\BMNDCGTen}}.
+\end{itemize}
+
+\subsection*{Main challenges encountered}
+\begin{itemize}
+  \item \textbf{Resume and duplicates:} repeated crawl runs appended lines; some URLs mapped to multiple \texttt{docno} values over time. Dedupe-by-\texttt{docno} plus index-time \texttt{drop\_duplicates} kept Terrier stable.
+  \item \textbf{Frontier / scheduling:} treating ``already saved'' URLs as non-expandable starved BFS; fixed by always enqueueing unvisited links and then splitting \emph{new} vs \emph{expand} queues so new URLs are tried first.
+  \item \textbf{Scale vs site reality:} many hosts return HTTP 403 to datacenter or script clients; tqdm only moves on \emph{new} docs so long runs looked idle while HTTP work continued---postfix counters (\texttt{fetched}, queue sizes) were added for visibility.
+  \item \textbf{PyTerrier/Java:} JVM init, absolute index paths, \texttt{text\_attrs}, unique \texttt{docno} constraints required several integration passes.
+  \item \textbf{Evaluation wiring:} PyTerrier \texttt{Experiment} metric tables differ in wide vs aggregate layouts; bootstrap qrels are not a substitute for human \texttt{qrels.tsv}.
+\end{itemize}

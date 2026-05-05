@@ -1,37 +1,49 @@
-# Information Retrieval course project Fall-1401
+# Temple IR Project (10-Week End-to-End Pipeline)
 
-#### Developing a simple Persian search engine
+This repository contains a complete implementation pipeline for the Temple domain IR project:
 
-# Phase 1
+1. Crawl and clean the `temple.edu` corpus
+2. Build a PyTerrier index
+3. Generate collection analysis outputs
+4. Create query templates and run pooling
+5. Evaluate baseline retrieval models
+6. Run BM25 parameter sensitivity experiments
+7. Run optimization experiments
+8. Run a modern extension experiment
+9. Generate error analysis artifacts
+10. Produce week-by-week report drafts
 
-### Pre-processing data
-* Tokenizing docs
-* Deleting stop words
-* Stemming
+## Quick Start
 
-### Make positional inverted index
-* A dictionary containing all words of our dataset
-* Store frequency of each word in our dataset
-* Sotre every document that a word showed up in it and its frequency and its position in this document
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m src.pipeline --max-docs 100000 --start-url https://www.temple.edu
+```
 
-### Retrieve query results
-1. Select related document from inverted index
-2. Apply query operations (Not and Phrase operations)
-3. Score documents respected to:
-    1. How many words in query exist in theis document
-    2. How many times each word of query repeted in this document
-4. Show top-5 results with related sentences of those documents
+After you have new crawl data, **rebuild everything downstream** (dedupe, index, analysis, pooling, bootstrap qrels, eval, sensitivity, optimization, Markdown reports, and LaTeX):
 
-# Phase 2
+```bash
+make refresh
+```
 
-### tf.idf
+`make refresh` runs `src.refresh_phase_outputs`, which **overwrites** `index/terrier` from `data/raw/corpus_deduped.jsonl` (PyTerrier `overwrite=True`).
 
-* Calculating tf.idf score and cosine similarity between a query and a document
+## Expected Outputs
 
-### Champions list
+- `data/raw/`: crawled pages and metadata (`corpus.jsonl`)
+- `data/raw/corpus_deduped.jsonl`: first row per `docno`
+- `data/processed/`: queries, pool, qrels files
+- `index/`: PyTerrier index
+- `outputs/analysis/`: tables and plots (Zipf, doc length, word cloud)
+- `outputs/eval/`: model metrics and statistical tests
+- `outputs/optimization/`: latency/scoring/ranking comparisons
+- `reports/`: weekly Markdown (`week_*.md`), `final_report.md`, `DELIVERABLES.md`, **`HOW_IT_WORKS.md`** (plain-language pipeline + challenges)
+- `reports/tex/`: LaTeX sources + `main.pdf` if you run `pdflatex` (see `reports/tex/README.md`)
 
-* Index elimination using champions list to make faster our engine
+## Notes
 
-# Instructor
-
-Information Retrieval course Fall-1401 at Computer Engineering of Amirkabir University of Technology taught by [**Prof. Ahmad Nickabadi**](https://scholar.google.com/citations?user=pSMNSZwAAAAJ&hl=en)
+- CUDA is only used if available for optional neural reranking.
+- For strict reproducibility, run scripts from project root.
+- If crawling is blocked by robots or network policy, swap in a provided class crawl dump.

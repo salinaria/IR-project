@@ -1,1 +1,4 @@
-*.json
+.venv/
+data/
+logs/
+__pycache__/
