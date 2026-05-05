@@ -1,7 +1,7 @@
 # Week 3: Collaborative Query Construction
 
 ## Deliverables
-- [x] Fifteen queries with intent type + metadata (template).
+- [x] Query set with intent type + metadata (**105** queries).
 
 ## Artifacts
 - `data/processed/query_templates.tsv` (qid, query, query_type, intent, expected_doc_types)

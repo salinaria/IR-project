@@ -90,6 +90,7 @@ def write_all_reports(base: Path, target_docs: int = 20000) -> None:
     raw_lines = count_jsonl_lines(base / "data/raw/corpus.jsonl")
     dedup_lines = count_jsonl_lines(base / "data/raw/corpus_deduped.jsonl")
     summary = safe_read_csv(base / "outputs/analysis/collection_summary.csv")
+    query_templates = safe_read_csv(base / "data/processed/query_templates.tsv", sep="\t")
     eval_metrics = safe_read_csv(base / "outputs/eval/aggregate_metrics.csv")
     sensitivity = safe_read_csv(base / "outputs/eval/bm25_sensitivity.csv")
     optimization = safe_read_csv(base / "outputs/optimization/optimization_results.csv")
@@ -183,10 +184,10 @@ def write_all_reports(base: Path, target_docs: int = 20000) -> None:
 ### Rubric gap
 - Crawl pipeline records **HTML only** (`file_type=html`). For Word/PDF counts from live site, add download + text extraction (e.g. `pdfplumber`, `python-docx`) in a follow-up ingest script.
 """,
-        3: """# Week 3: Collaborative Query Construction
+        3: f"""# Week 3: Collaborative Query Construction
 
 ## Deliverables
-- [x] Fifteen queries with intent type + metadata (template).
+- [x] Query set with intent type + metadata (**{len(query_templates)}** queries).
 
 ## Artifacts
 - `data/processed/query_templates.tsv` (qid, query, query_type, intent, expected_doc_types)

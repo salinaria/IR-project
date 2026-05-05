@@ -6,9 +6,9 @@
 ## Results table
 | setting | latency_ms | docs_scored |
 | --- | --- | --- |
-| disjunctive | 268.0750809995516 | 15000.0 |
-| conjunctive | 283.55378699779976 | 15000.0 |
-| overlap_at_10 | 0.0 | 1.0 |
+| disjunctive | 2326.526671007741 | 105000.0 |
+| conjunctive | 1962.4511059955692 | 92390.0 |
+| overlap_at_10 | 0.0 | 0.5202127659574468 |
 
 
 Artifact: `outputs/optimization/optimization_results.csv`
