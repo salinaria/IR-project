@@ -1,10 +1,16 @@
 # Week 8: Modern Extension
 
 ## Deliverables
-- [ ] **Option A:** Elasticsearch comparison, or **Option B:** LLM reranking — **not implemented** in this repo.
+- [x] **Option A:** Elasticsearch comparison.
 
-## What to add
-- Wire an ES index over the same corpus **or** a cross-encoder / API reranker on BM25 top-k.
-- Reuse `outputs/eval/` layout: aggregate + by-query-type tables.
+## Elasticsearch outputs
+- `outputs/extension/es_aggregate_metrics.csv`
+- `outputs/extension/es_per_query_metrics.csv`
+- `outputs/extension/es_metrics_by_query_type.csv`
+- `outputs/extension/es_vs_pyterrier_ttest.csv`
 
-This week is intentionally left for you to choose stack (API keys, cluster access).
+## Aggregate metrics
+| name | map | P_5 | recall_10 | ndcg_cut_10 |
+| --- | --- | --- | --- | --- |
+| ElasticsearchBM25 | 0.6048140709232691 | 0.6895238095238095 | 0.2553940409046527 | 0.5027055516290783 |
+

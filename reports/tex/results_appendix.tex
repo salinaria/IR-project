@@ -1,0 +1,90 @@
+\clearpage
+\section*{Appendix A: Figures and brief summaries}
+\phantomsection
+\addcontentsline{toc}{section}{Appendix A: Figures and brief summaries}
+
+\subsection*{Plots}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/analysis/zipf_loglog.png}}
+\caption{Zipf distribution (log--log) with dashed OLS fit.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/analysis/doc_length_distribution.png}}
+\caption{Histogram of tokenized document lengths.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/analysis/wordcloud_top_terms.png}}
+\caption{Word cloud of frequent non-stopwords.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/eval/bm25_sensitivity_curves.png}}
+\caption{BM25 parameter sensitivity (nDCG@10 contours / curves).}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/charts/aggregate_model_comparison.png}}
+\caption{Aggregate retrieval metrics comparison.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/charts/ndcg_by_query_type.png}}
+\caption{nDCG@10 broken down by query type.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{\detokenize{../../outputs/charts/per_query_ndcg_distribution.png}}
+\caption{Dispersion of per-query nDCG@10.}
+\end{figure}
+
+
+\subsection*{Summary: stopwords}
+
+Token coverage uses NLTK English stopwords extended with corpus low-IDF terms (\texttt{corpus\_tfidf\_stopwords.csv} lists 250 corpus-specific candidates; the merged list has 448 types after union with NLTK). In a sample pass, 26.00\% of tokens matched NLTK-only; 27.12\% matched the TF--IDF low-IDF list only; after merging, 53.12\% of tokens were treated as stopwords (vocabulary size from the summary file: 214003.0 types).
+
+\subsection*{Summary: queries}
+
+The evaluation set contains 105 annotated queries in \texttt{data/processed/query\_templates.tsv} (exported to \texttt{queries.tsv} for retrieval). Intent types: informational (39), navigational (34), broad\_ambiguous (20), broad (10), transactional (2). Pooling and \texttt{qrels.tsv} judgments are described in the weekly sections; full tables remain under \texttt{outputs/eval/} if needed.
+
+\subsection*{Summary: optimization}
+
+The optimization step compared \textbf{disjunctive} vs \textbf{conjunctive} BM25 query evaluation. Mean batch latency was about 1929~ms (disjunctive) vs 1618~ms (conjunctive); documents scored were 105000 vs 92390. Overlap at rank 10 between the two rankings was approximately 0.520.
+
+\subsection*{Metrics and models}
+
+The figures above summarize sensitivity, query-type effects, and dispersion of per-query scores. The table below gives aggregate MAP, P@5, recall@10, and nDCG@10 for each run model. Use the exported per-query CSV for head-to-head contrasts beyond these totals.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Aggregate retrieval metrics (graded qrels as in the eval run). PyTerrier baselines; optional Elasticsearch BM25 row when the extension was executed.}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l r r r r}
+\toprule
+name & map & P\_5 & recall\_10 & ndcg\_cut\_10 \\
+\midrule
+BM25 & 0.4897853550849345 & 0.9961904761904762 & 0.4184918391876504 & 0.8300558702936255 \\
+TFIDF & 0.5078014044068315 & 0.9942857142857143 & 0.4127164492343494 & 0.8243925857440955 \\
+QL & 0.5411758282026168 & 0.937142857142857 & 0.3935576203971061 & 0.7732880292938707 \\
+ElasticsearchBM25 & 0.6048140709232691 & 0.6895238095238095 & 0.25539404090465273 & 0.5027055516290783 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{4pt}
+\textit{\footnotesize{Sensitivity grids, per-query scores, and query-type splits are on disk under \texttt{outputs/eval/}; charts under \texttt{outputs/charts/}.}}
+\end{table}
+
+
+\subsection*{Formal hypothesis tests}
+
+PyTerrier paired comparisons: \texttt{\detokenize{outputs/eval/paired_t_tests.csv}}. Elasticsearch vs BM25: \texttt{\detokenize{outputs/extension/es_vs_pyterrier_ttest.csv}}.

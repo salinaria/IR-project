@@ -6,25 +6,46 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{url}
 \geometry{margin=1in}
 \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
 \input{macros}
-\title{Temple University IR Project\\Weekly narrative (auto-generated)}
+\title{Temple University IR Project\\Information Retrieval System Report}
+\author{Auto-export from project artifacts (\texttt{export\_latex\_reports.py}).}
 \date{\today}
 \begin{document}
 \sloppy
 \maketitle
 \tableofcontents
 \bigskip
+\section{Abstract}
+We built an end-to-end IR pipeline over a Temple University web crawl: crawl, deduplicate, index, analyze the collection, construct annotated queries, pool candidates, and evaluate baseline retrieval models. This PDF summarizes the final artifacts and key results.
+
+\section{Introduction}
+Our goal was to build a reproducible retrieval system and quantify how standard models behave on a real web-derived collection. The dataset is a domain-specific crawl (primarily HTML pages) and the evaluation uses graded judgments where available.
+
+\section{Data collection and normalization}
+\begin{itemize}
+  \item Raw crawl JSONL lines: \textbf{\RawCorpusLines} (\texttt{data/raw/corpus.jsonl}).
+  \item Deduplicated documents: \textbf{\DedupDocs} (\texttt{data/raw/corpus\_deduped.jsonl}).
+\end{itemize}
+We deduplicated by keeping the first occurrence per \texttt{docno} and ensured stable identifiers for indexing.
+
+\section{Indexing}
+We indexed the deduplicated corpus into PyTerrier/Terrier (\texttt{index/terrier}) with \texttt{docno} metadata and a tokenized text field. The resulting collection summary for this snapshot is: docs \textbf{\SummaryDocs}, vocab \textbf{\SummaryVocab}, tokens \textbf{\SummaryTokens}, avg length \textbf{\SummaryAvgLen}.
+
+\section{Experimental setup}
+We evaluated standard bag-of-words baselines (BM25, TF--IDF, and Query Likelihood) using graded qrels when present. We also ran a BM25 sensitivity sweep over $(k_1, b)$ and a small optimization experiment comparing conjunctive vs disjunctive evaluation.
+
+\section{Challenges and implementation notes}
 \input{00_system}
-\input{week_01}
-\input{week_02}
-\input{week_03}
-\input{week_04}
-\input{week_05}
-\input{week_06}
-\input{week_07}
-\input{week_08}
-\input{week_09}
-\input{week_10}
+
+\input{results_section}
+
+\section{Reproducibility}
+To regenerate outputs and this PDF:
+\begin{verbatim}
+.venv/bin/python3 -m src.refresh_phase_outputs
+cd reports/tex && pdflatex main.tex && pdflatex main.tex
+\end{verbatim}
 \end{document}

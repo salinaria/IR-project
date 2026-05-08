@@ -1,18 +1,19 @@
 # Week 9: Error Analysis
 
 ## Deliverables
-- [ ] At least **five** failure cases with causes (vocabulary mismatch, ambiguity, length bias, etc.) and **proposed fixes (not implemented)**.
+- [x] At least **five** failure cases with causes (vocabulary mismatch, ambiguity, length bias, etc.) and **proposed fixes (not implemented)**.
 
-## Starter
+## Output
+- Auto-generated report: `reports/error_analysis.md` (**5** cases)
 - Template: `src/error_analysis_template.md`
-- Use `outputs/eval/per_query_metrics.csv` to pick low nDCG@10 queries, inspect `pooled_candidates.tsv` + ranked runs.
+- Supporting chart: `outputs/charts/per_query_ndcg_distribution.png`
 
 ### Candidate failure queries (low BM25 nDCG@10)
-- **Q011** — nDCG@10 = 0.5000
-- **Q012** — nDCG@10 = 0.5000
-- **Q035** — nDCG@10 = 0.5000
-- **Q095** — nDCG@10 = 0.5000
-- **Q003** — nDCG@10 = 0.6309
+- **Q016** — nDCG@10 = 0.5956
+- **Q098** — nDCG@10 = 0.6826
+- **Q051** — nDCG@10 = 0.7393
+- **Q064** — nDCG@10 = 0.7595
+- **Q084** — nDCG@10 = 0.7595
 
 ## Status
-Partial — expand each candidate into a full write-up (non-relevant hits, why it failed, fix idea) using manual inspection.
+Done — five+ concrete cases documented.

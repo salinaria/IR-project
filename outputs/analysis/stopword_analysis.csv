@@ -1,2 +1,2 @@
-stopword_fraction,non_stopword_fraction
-0.26000053506004983,0.7399994649399502
+stopword_fraction_nltk_only,corpus_stopword_fraction_tfidf_only,merged_stopword_fraction,non_stopword_fraction_after_merge,n_corpus_stopwords_tfidf,n_merged_stopwords
+0.26000053506004983,0.2711803294001441,0.5311808644601939,0.46881913553980614,250,448

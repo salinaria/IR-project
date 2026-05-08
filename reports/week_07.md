@@ -6,8 +6,8 @@
 ## Results table
 | setting | latency_ms | docs_scored |
 | --- | --- | --- |
-| disjunctive | 2326.526671007741 | 105000.0 |
-| conjunctive | 1962.4511059955692 | 92390.0 |
+| disjunctive | 1929.4830450003249 | 105000.0 |
+| conjunctive | 1618.4531059998335 | 92390.0 |
 | overlap_at_10 | 0.0 | 0.5202127659574468 |
 
 

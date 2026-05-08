@@ -9,16 +9,17 @@ This is a short companion to the code and to `reports/tex/00_system.tex`. Number
 | Crawl | `src/crawl_temple.py` | `data/raw/corpus.jsonl` (append, resumable) |
 | Dedupe | `src/dedupe_corpus.py` or refresh | `data/raw/corpus_deduped.jsonl` (unique `docno`) |
 | Index | `src/build_index.py` or refresh | `index/terrier/` |
-| Collection analysis | `src/collection_analysis.py` | `outputs/analysis/*.csv`, `*.png` |
+| Collection analysis | `src/collection_analysis.py` | `outputs/analysis/*.csv`, `*.png` — NLTK + **low-IDF TF-IDF** corpus stopwords, Zipf dashed fit |
 | Pooling | `src/pooling.py` | `data/processed/pooled_candidates.tsv` |
-| Bootstrap qrels | `src/bootstrap_qrels.py` | `data/processed/qrels_bootstrap.tsv` (metrics only) |
+| Auto-label pool | `src/auto_label_qrels.py` | `data/processed/qrels.tsv`, `outputs/eval/cohen_kappa.csv` |
+| Bootstrap qrels | `src/bootstrap_qrels.py` | `data/processed/qrels_bootstrap.tsv` (fallback / smoke tests) |
 | Evaluation | `src/evaluate_models.py` | `outputs/eval/*.csv` |
 | BM25 sensitivity | `src/bm25_sensitivity.py` | `outputs/eval/bm25_sensitivity*.csv`, `.png` |
 | Optimization | `src/optimization_experiment.py` | `outputs/optimization/optimization_results.csv` |
 | Markdown reports | `src/update_reports.py` | `reports/week_*.md`, `final_report.md`, `DELIVERABLES.md` |
 | LaTeX bundle | `src/export_latex_reports.py` | `reports/tex/*.tex` |
 
-**One command** after crawling: `make refresh` (or `python -m src.refresh_phase_outputs`). That now **dedupes, rebuilds the index from the deduped corpus**, regenerates analysis through optimization, rewrites Markdown reports, and regenerates LaTeX under `reports/tex/`.
+**One command** after crawling: `make refresh` — dedupes, rebuilds Terrier index, runs collection analysis (**TF-IDF stoplist + Zipf dashed fit**), pooling, evaluates with **`qrels.tsv` when non-empty**, sensitivity, optimization, optional Elasticsearch + charts, regenerates Markdown and LaTeX.
 
 ## Data flow (mental model)
 
@@ -31,7 +32,7 @@ flowchart LR
     J --> D[corpus_deduped.jsonl]
     D --> I[PyTerrier index]
     I --> P[Pooling]
-    P --> Q[bootstrap qrels]
+    P --> Q[graded qrels / bootstrap fallback]
     Q --> E[Eval + sensitivity + optimization]
     D --> A[Collection analysis]
   end

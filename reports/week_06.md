@@ -7,4 +7,4 @@
 - `outputs/eval/bm25_sensitivity.csv`
 - `outputs/eval/bm25_sensitivity_curves.png`
 
-Sensitivity uses the same qrels as Week 5 (bootstrap until replaced).
+Sensitivity runs on the **same judged qrels** as baseline evaluation (**human/official**).

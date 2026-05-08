@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {1}Abstract}{1}{section.1}%
+\contentsline {section}{\numberline {2}Introduction}{1}{section.2}%
+\contentsline {section}{\numberline {3}Data Collection and Normalization}{2}{section.3}%
+\contentsline {section}{\numberline {4}Indexing}{2}{section.4}%
+\contentsline {section}{\numberline {5}Experimental Setup}{2}{section.5}%
+\contentsline {section}{\numberline {6}Challenges and Implementation Notes}{2}{section.6}%
+\contentsline {section}{\numberline {7}Results}{3}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Plots}{3}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Stopwords, queries, and optimization}{3}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Reproducibility}{8}{section.8}%

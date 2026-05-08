@@ -1,0 +1,65 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{url}
+\geometry{margin=1in}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\input{macros}
+
+\title{Temple University Information Retrieval Project\\
+A Reproducible Search System for a Domain-Specific Web Collection}
+\author{Project Report}
+\date{\today}
+
+\begin{document}
+\sloppy
+\maketitle
+\tableofcontents
+\bigskip
+
+\section{Abstract}
+This report presents an end-to-end information retrieval pipeline built over a Temple University web crawl. The system covers the full retrieval workflow: web collection processing, document deduplication, indexing, collection analysis, query construction, relevance assessment, candidate pooling, and evaluation of standard retrieval baselines. We use the resulting collection to study the behavior of classical retrieval models on a realistic, domain-specific corpus. The report summarizes the final system artifacts, implementation choices, experimental setup, and key empirical findings.
+
+\section{Introduction}
+The goal of this project is to develop a reproducible information retrieval system and evaluate how established retrieval models perform on a real web-derived collection. Unlike controlled benchmark datasets, web crawls contain duplicate pages, noisy HTML content, heterogeneous document lengths, and inconsistent metadata. These properties make the collection useful for studying practical retrieval challenges in a realistic setting.
+
+Our corpus consists primarily of HTML pages crawled from the Temple University domain. After preprocessing and deduplication, the documents are indexed using PyTerrier/Terrier and evaluated with a set of annotated information needs. Where available, graded relevance judgments are used to compare retrieval effectiveness across multiple ranking models.
+
+\section{Data Collection and Normalization}
+The raw collection was stored as JSONL records and then normalized into a deduplicated corpus suitable for indexing and evaluation. The main collection statistics are:
+\begin{itemize}
+  \item Raw crawl records: \textbf{\RawCorpusLines} (\texttt{data/raw/corpus.jsonl}).
+  \item Deduplicated documents: \textbf{\DedupDocs} (\texttt{data/raw/corpus\_deduped.jsonl}).
+\end{itemize}
+
+Deduplication was performed by retaining the first occurrence of each \texttt{docno}. This step ensures that each indexed document has a stable identifier and prevents duplicate records from artificially influencing retrieval results. The normalized corpus therefore provides a consistent basis for indexing, ranking, and evaluation.
+
+\section{Indexing}
+The deduplicated corpus was indexed using PyTerrier/Terrier in \texttt{index/terrier}. Each document was represented with \texttt{docno} metadata and a tokenized text field extracted from the normalized page content. For this snapshot of the collection, the resulting index contains \textbf{\SummaryDocs} documents, a vocabulary of \textbf{\SummaryVocab} terms, \textbf{\SummaryTokens} total tokens, and an average document length of \textbf{\SummaryAvgLen} tokens.
+
+These statistics provide a compact summary of the indexed collection and help contextualize the retrieval experiments. In particular, vocabulary size, token count, and average document length are important indicators of collection scale and lexical variability.
+
+\section{Experimental Setup}
+We evaluated several standard bag-of-words retrieval baselines, including BM25, TF--IDF, and Query Likelihood. All models were evaluated using graded relevance judgments when available. In addition to comparing baseline effectiveness, we conducted a BM25 parameter sensitivity analysis over $(k_1, b)$ to examine how ranking performance changes under different term-frequency saturation and length-normalization settings.
+
+We also ran a small optimization experiment comparing conjunctive and disjunctive query evaluation strategies. This analysis helps characterize the trade-off between retrieval strictness and candidate coverage, especially for multi-term information needs.
+
+\section{Challenges and Implementation Notes}
+\input{00_system}
+
+\input{results_section}
+
+\section{Reproducibility}
+All reported outputs can be regenerated from the project artifacts. To refresh the intermediate outputs and rebuild this PDF, run:
+\begin{verbatim}
+.venv/bin/python3 -m src.refresh_phase_outputs
+cd reports/tex && pdflatex main.tex && pdflatex main.tex
+\end{verbatim}
+
+This workflow regenerates the phase outputs, updates the LaTeX macros, and compiles the final report from the source files.
+\end{document}

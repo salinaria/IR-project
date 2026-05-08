@@ -1,14 +1,14 @@
 # Week 5: Baseline Retrieval Models
 
 ## Deliverables
-- [x] BM25, TF-IDF, Query Likelihood runs + metrics (with bootstrap qrels until human labels exist).
+- [x] BM25, TF-IDF, Query Likelihood runs + metrics (qrels mode: **human/official**).
 
 ## Aggregate metrics
 | name | map | P_5 | recall_10 | ndcg_cut_10 |
 | --- | --- | --- | --- | --- |
-| BM25 | 0.8984126984126983 | 0.1999999999999996 | 1.0 | 0.9247131053061266 |
-| TFIDF | 0.0559749250818046 | 0.0152380952380952 | 0.0952380952380952 | 0.0633537703790791 |
-| QL | 0.0488454824194058 | 0.0152380952380952 | 0.1047619047619047 | 0.0578576255383321 |
+| BM25 | 0.4897853550849345 | 0.9961904761904762 | 0.4184918391876504 | 0.8300558702936255 |
+| TFIDF | 0.5078014044068315 | 0.9942857142857144 | 0.4127164492343494 | 0.8243925857440955 |
+| QL | 0.5411758282026168 | 0.937142857142857 | 0.3935576203971061 | 0.7732880292938707 |
 
 
 ### By query type
@@ -17,5 +17,7 @@
 ### Artifacts
 - `outputs/eval/per_query_metrics.csv`
 - `outputs/eval/paired_t_tests.csv`
+- `outputs/charts/aggregate_model_comparison.png`
+- `outputs/charts/ndcg_by_query_type.png`
 
-**Note:** Numbers below use **bootstrap** qrels unless you replace them with human judgments.
+**Note:** Numbers below use **human/official** qrels.

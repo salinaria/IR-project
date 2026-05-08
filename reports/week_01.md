@@ -1,7 +1,7 @@
 # Week 1: Data Collection
 
 ## Deliverables
-- [x] Crawl `temple.edu` at scale (target **20000** unique docs).
+- [x] Crawl `temple.edu` at scale (current deduped corpus: **42217** docs).
 
 ## Results
 - Raw JSONL lines: **71876** (includes duplicates from restarts).

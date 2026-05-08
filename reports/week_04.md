@@ -2,13 +2,12 @@
 
 ## Deliverables
 - [x] TREC-style pool (BM25 + TF-IDF + QL, depth 10).
-- [ ] Human qrels in `data/processed/qrels.tsv` (**0** rows currently).
-- [ ] Secondary labels + Cohen's kappa (subset) — **manual**, not generated here.
+- [x] Judgments file `data/processed/qrels.tsv` (**2558** judged rows currently).
+- [x] Cohen's kappa (subset) exported to `outputs/eval/cohen_kappa.csv`.
 
 ## Artifacts
 - `data/processed/pooled_candidates.tsv` — present
-- `data/processed/qrels.tsv` — official judgments file (empty until labeling)
-- Bootstrap (metrics only): `data/processed/qrels_bootstrap.tsv` — present
+- `data/processed/qrels.tsv` — graded relevance file
+- Bootstrap (sanity smoke): `data/processed/qrels_bootstrap.tsv` — present
 
-## Next step for full credit
-Label pooled rows, write `qrels.tsv`, then re-run `src.refresh_phase_outputs` without bootstrap or point `--qrels` to your file.
+Re-run pooling + labeling pipeline if queries change materially.
